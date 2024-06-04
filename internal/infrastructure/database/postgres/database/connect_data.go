@@ -23,7 +23,7 @@ func getConnectData() *connectData {
 		port:     "5432",
 		user:     "postgres",
 		password: "1111",
-		dbName:   "WB",
+		dbName:   "RTB",
 	}
 	fmt.Printf("Connect Data========================: %+v\n", connData) // Отладочная печать
 	return connData

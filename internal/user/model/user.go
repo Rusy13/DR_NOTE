@@ -1,10 +1,12 @@
 package model
 
+import "time"
+
 type User struct {
-	ID       int    `json:"id"`
-	Name     string `json:"name"`
-	Email    string `json:"email"`
-	Birthday string `json:"birthday"`
+	ID       int       `json:"id"`
+	Name     string    `json:"name"`
+	Email    string    `json:"email"`
+	Birthday time.Time `json:"birthday"`
 }
 
 type Subscription struct {

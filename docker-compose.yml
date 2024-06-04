@@ -31,7 +31,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1111
-      POSTGRES_DB: WB
+      POSTGRES_DB: RTB
 
 #  test-db:
 #    restart: always
