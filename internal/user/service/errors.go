@@ -3,5 +3,5 @@ package service
 import "errors"
 
 var (
-	ErrOrdersIsInactive = errors.New("this user is inactive")
+	ErrOrdersIsInactive = errors.New("this order is inactive")
 )
