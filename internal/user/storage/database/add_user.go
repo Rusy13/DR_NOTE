@@ -6,8 +6,8 @@ import (
 )
 
 func (s *UserStorageDB) AddUser(ctx context.Context, user *models.User) (*models.User, error) {
-	query := "INSERT INTO users (name, email, birthday) VALUES ($1, $2, $3) RETURNING id"
-	err := s.db.QueryRow(ctx, query, user.Name, user.Email, user.Birthday).Scan(&user.ID)
+	query := "INSERT INTO users (name, email, birthday, password) VALUES ($1, $2, $3, $4) RETURNING id"
+	err := s.db.QueryRow(ctx, query, user.Name, user.Email, user.Birthday, user.Password).Scan(&user.ID)
 	if err != nil {
 		s.logger.Errorw("Failed to add user to database", "error", err)
 		return nil, err

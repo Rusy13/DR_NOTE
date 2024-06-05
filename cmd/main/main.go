@@ -78,7 +78,8 @@ func main() {
 		logger.Fatal(http.ListenAndServe(addr, router))
 	}()
 
-	bot := notification.NewTelegramBot("TOKEN", "CHAT-ID", dbPool)
+	bot := notification.NewTelegramBot("TOKEN", "CHAT_ID", dbPool)
+	//TOKEN CHAT_ID
 	go bot.StartListening()
 
 	select {}

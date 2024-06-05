@@ -7,6 +7,7 @@ type User struct {
 	Name     string    `json:"name"`
 	Email    string    `json:"email"`
 	Birthday time.Time `json:"birthday"`
+	Password string    `json:"password,omitempty"`
 }
 
 type Subscription struct {

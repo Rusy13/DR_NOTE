@@ -11,6 +11,7 @@ type AddUserDTO struct {
 	Name     string `json:"name" valid:"required"`
 	Email    string `json:"email" valid:"required,email"`
 	Birthday string `json:"birthday" valid:"required"`
+	Password string `json:"password" valid:"required"`
 }
 
 func (a *AddUserDTO) Validate() error {
@@ -31,5 +32,6 @@ func ConvertToUser(b AddUserDTO) (model.User, error) {
 		Name:     b.Name,
 		Email:    b.Email,
 		Birthday: birthday,
+		Password: b.Password,
 	}, nil
 }

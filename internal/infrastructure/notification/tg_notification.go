@@ -10,6 +10,7 @@ import (
 	"time"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	"golang.org/x/crypto/bcrypt"
 )
 
 // TelegramBot представляет собой структуру для работы с ботом Telegram.
@@ -49,8 +50,7 @@ func (bot *TelegramBot) StartListening() {
 
 	updates, err := bot.bot.GetUpdatesChan(u)
 	if err != nil {
-		log.Println("error getting updates channel: %v", err)
-
+		log.Printf("error getting updates channel: %v", err)
 		return
 	}
 
@@ -63,30 +63,43 @@ func (bot *TelegramBot) StartListening() {
 		// Handle incoming messages here
 		// For example, to handle authorization via email:
 		if strings.HasPrefix(message.Text, "/authorize") {
-			email := strings.TrimPrefix(message.Text, "/authorize ")
-			err := bot.authorizeUserByEmail(email, message.Chat.ID)
-			if err != nil {
-				log.Println("error authorizing user: %v", err)
+			args := strings.TrimPrefix(message.Text, "/authorize ")
+			parts := strings.Split(args, " ")
+			if len(parts) != 2 {
+				bot.sendMessage(message.Chat.ID, "Usage: /authorize <email> <password>")
+				continue
+			}
 
+			email := parts[0]
+			password := parts[1]
+
+			err := bot.authorizeUserByEmail(email, password, message.Chat.ID)
+			if err != nil {
+				log.Printf("error authorizing user: %v", err)
 				bot.sendMessage(message.Chat.ID, "Error authorizing user. Please try again later.")
 				continue
 			}
 			bot.sendMessage(message.Chat.ID, "User authorized successfully!")
 		}
-
 	}
 }
 
-func (bot *TelegramBot) authorizeUserByEmail(email string, chatID int64) error {
+func (bot *TelegramBot) authorizeUserByEmail(email, password string, chatID int64) error {
 	ctx := context.Background()
 	var userID int64
-	err := bot.db.Get(ctx, &userID, "SELECT id FROM users WHERE email = $1", email)
+	var storedPassword string
+
+	err := bot.db.QueryRow(ctx, "SELECT id, password FROM users WHERE email = $1", email).Scan(&userID, &storedPassword)
 	if err != nil {
 		return fmt.Errorf("error getting user by email: %w", err)
 	}
 
-	// Здесь вы можете реализовать вашу логику авторизации, например, сохранить авторизованного пользователя в базе данных
-	// или предоставить доступ к определенным функциям.
+	err = bcrypt.CompareHashAndPassword([]byte(storedPassword), []byte(password))
+	if err != nil {
+		return fmt.Errorf("invalid password")
+	}
+
+	// Логика авторизации, например, сохранение авторизованного пользователя в базе данных или предоставление доступа к определенным функциям.
 	bot.NotifyBirthdaySubscribers(userID)
 
 	return nil
@@ -130,7 +143,6 @@ func (bot *TelegramBot) sendMessage(chatID int64, text string) {
 	}
 }
 
-// isBirthday проверяет, является ли указанная дата днем рождения.
 // isBirthday проверяет, является ли указанная дата днем рождения.
 func isBirthday(today, birthday time.Time) bool {
 	log.Println(today.Day(), "=====", birthday.Day(), "=====", today.Month(), "=====", birthday.Month())
