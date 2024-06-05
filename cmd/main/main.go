@@ -1,6 +1,7 @@
 package main
 
 import (
+	"awesomeProject/internal/infrastructure/notification"
 	"context"
 	"log"
 	"net/http"
@@ -73,5 +74,14 @@ func main() {
 		"type", "START",
 		"addr", addr,
 	)
-	logger.Fatal(http.ListenAndServe(addr, router))
+	go func() {
+		logger.Fatal(http.ListenAndServe(addr, router))
+	}()
+
+	// Замените на свой токен и идентификатор чата
+	bot := notification.NewTelegramBot("6598556806:AAGLxlf-WDYRC0ZjaIqDVEAaQ8zS-PFT_hs", "716615282", dbPool)
+	go bot.StartListening()
+
+	select {}
+
 }
