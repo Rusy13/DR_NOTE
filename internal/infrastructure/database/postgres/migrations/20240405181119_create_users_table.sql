@@ -5,7 +5,10 @@ CREATE TABLE users (
                        name VARCHAR(255) NOT NULL,
                        email VARCHAR(255) UNIQUE NOT NULL,
                        birthday DATE NOT NULL,
-                       password TEXT NOT NULL
+                       password TEXT NOT NULL,
+                       api_id INT NOT NULL,
+                       api_hash VARCHAR(255) NOT NULL,
+                       phone VARCHAR(20) NOT NULL
 );
 
 

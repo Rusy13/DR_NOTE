@@ -20,7 +20,7 @@ func (s *UserStorageDB) GetUsers(ctx context.Context) ([]models.User, error) {
 	}
 
 	// If not in cache, get users from DB
-	query := "SELECT id, name, email, birthday FROM users"
+	query := "SELECT id, name, email, birthday, api_id, api_hash, phone FROM users"
 	err = s.db.Select(ctx, &users, query)
 	if err != nil {
 		s.logger.Errorw("Failed to get users from database", "error", err)

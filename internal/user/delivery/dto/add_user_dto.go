@@ -12,6 +12,9 @@ type AddUserDTO struct {
 	Email    string `json:"email" valid:"required,email"`
 	Birthday string `json:"birthday" valid:"required"`
 	Password string `json:"password" valid:"required"`
+	APIID    int    `json:"api_id" valid:"required"`
+	APIHash  string `json:"api_hash" valid:"required"`
+	Phone    string `json:"phone" valid:"required"`
 }
 
 func (a *AddUserDTO) Validate() error {
@@ -33,5 +36,8 @@ func ConvertToUser(b AddUserDTO) (model.User, error) {
 		Email:    b.Email,
 		Birthday: birthday,
 		Password: b.Password,
+		ApiID:    b.APIID,
+		ApiHash:  b.APIHash,
+		Phone:    b.Phone,
 	}, nil
 }
