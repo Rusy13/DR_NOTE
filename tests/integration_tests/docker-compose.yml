@@ -1,0 +1,82 @@
+version: '3'
+
+services:
+  test_postgres:
+    image: postgres:13.2
+    environment:
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: test_postgres
+    ports:
+      - '5433:5432'
+
+  redis:
+    image: 'redis'
+    ports:
+      - '6380:6379'
+#
+#  zookeeper:
+#    image: confluentinc/cp-zookeeper:latest
+#    environment:
+#      ZOOKEEPER_SERVER_ID: 1
+#      ZOOKEEPER_TICK_TIME: 2000
+#      ZOOKEEPER_CLIENT_PORT: 12181
+#      ZOOKEEPER_INIT_LIMIT: 5
+#      ZOOKEEPER_SYNC_LIMIT: 2
+#      ZOOKEEPER_SERVERS: zookeeper:12888:13888
+#    healthcheck:
+#      test: echo stat | nc localhost 12181
+#      interval: 10s
+#      timeout: 10s
+#      retries: 3
+#    ports:
+#      - "12181:12181"
+#      - "12888:12888"
+#      - "13888:13888"
+#
+#  kafka1:
+#    image: confluentinc/cp-kafka:latest
+#    healthcheck:
+#      test: ps augwwx | egrep [S]upportedKafka
+#    depends_on:
+#      - zookeeper
+#    ports:
+#      - "8004:8004"
+#    environment:
+#      KAFKA_BROKER_ID: 1
+#      KAFKA_LISTENERS: LISTENER_INT://kafka1:29091,LISTENER_EXT://0.0.0.0:8004
+#      KAFKA_ZOOKEEPER_CONNECT: zookeeper:12181
+#      KAFKA_ADVERTISED_LISTENERS: LISTENER_INT://kafka1:29091,LISTENER_EXT://localhost:8004
+#      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_INT:PLAINTEXT,LISTENER_EXT:PLAINTEXT
+#      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_INT
+#
+#  kafka2:
+#    image: confluentinc/cp-kafka:latest
+#    healthcheck:
+#      test: ps augwwx | egrep [S]upportedKafka
+#    depends_on:
+#      - zookeeper
+#    ports:
+#      - "8005:8005"
+#    environment:
+#      KAFKA_BROKER_ID: 2
+#      KAFKA_LISTENERS: LISTENER_INT://kafka2:29092,LISTENER_EXT://0.0.0.0:8005
+#      KAFKA_ZOOKEEPER_CONNECT: zookeeper:12181
+#      KAFKA_ADVERTISED_LISTENERS: LISTENER_INT://kafka2:29092,LISTENER_EXT://localhost:8005
+#      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_INT:PLAINTEXT,LISTENER_EXT:PLAINTEXT
+#      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_INT
+#
+#  kafka3:
+#    image: confluentinc/cp-kafka:latest
+#    healthcheck:
+#      test: ps augwwx | egrep [S]upportedKafka
+#    depends_on:
+#      - zookeeper
+#    ports:
+#      - "8006:8006"
+#    environment:
+#      KAFKA_BROKER_ID: 3
+#      KAFKA_LISTENERS: LISTENER_INT://kafka3:29093,LISTENER_EXT://0.0.0.0:8006
+#      KAFKA_ZOOKEEPER_CONNECT: zookeeper:12181
+#      KAFKA_ADVERTISED_LISTENERS: LISTENER_INT://kafka3:29093,LISTENER_EXT://localhost:8006
+#      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_INT:PLAINTEXT,LISTENER_EXT:PLAINTEXT
+#      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_INT

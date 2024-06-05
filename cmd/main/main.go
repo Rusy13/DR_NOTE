@@ -78,8 +78,7 @@ func main() {
 		logger.Fatal(http.ListenAndServe(addr, router))
 	}()
 
-	// Замените на свой токен и идентификатор чата
-	bot := notification.NewTelegramBot("6598556806:AAGLxlf-WDYRC0ZjaIqDVEAaQ8zS-PFT_hs", "716615282", dbPool)
+	bot := notification.NewTelegramBot("TOKEN", "CHAT-ID", dbPool)
 	go bot.StartListening()
 
 	select {}
