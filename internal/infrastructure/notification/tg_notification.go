@@ -115,7 +115,7 @@ func (bot *TelegramBot) NotifyBirthdaySubscribers(userID int64) {
 	ctx := context.Background()
 	now := time.Now()
 
-	rows, err := bot.db.Query(ctx, "SELECT users.id, users.name, users.birthday FROM users JOIN subscriptions ON users.id = subscriptions.user_id WHERE subscriptions.subscribed_to_id = $1", userID)
+	rows, err := bot.db.Query(ctx, "SELECT users.api_id, users.name, users.birthday FROM users JOIN subscriptions ON users.id = subscriptions.user_id WHERE subscriptions.subscribed_to_id = $1", userID)
 	if err != nil {
 		log.Println("error getting subscribers: %v", err)
 		return
@@ -175,7 +175,6 @@ func (bot *TelegramBot) createTelegramChat(ctx context.Context, apiID int, apiHa
 			return err
 		}
 
-		// Sign in using the code
 		auth, err := client.Auth().SignIn(ctx, phone, code, sentCodeConcrete.PhoneCodeHash)
 		if err != nil {
 			return fmt.Errorf("неправильный код")
@@ -185,7 +184,7 @@ func (bot *TelegramBot) createTelegramChat(ctx context.Context, apiID int, apiHa
 		var inputUsers []tg.InputUserClass
 		for _, userID := range userIDs {
 			inputUser := &tg.InputUser{
-				UserID:     int64(userID),
+				UserID:     userID,
 				AccessHash: 0,
 			}
 			inputUsers = append(inputUsers, inputUser)
@@ -199,8 +198,10 @@ func (bot *TelegramBot) createTelegramChat(ctx context.Context, apiID int, apiHa
 			return fmt.Errorf("ошибка при создании чата: %w", err)
 		}
 
+		log.Println("inputUsers=:", inputUsers)
 		for _, userID := range inputUsers {
 			soob, err := tg.NewClient(client).MessagesAddChatUser(ctx, &tg.MessagesAddChatUserRequest{ChatID: int64(cchat.TypeID()), UserID: userID})
+			log.Println("MessagesAddChatUser:", int64(cchat.TypeID()), userID)
 			log.Println("soob.GetMissingInvitees():", soob.GetMissingInvitees())
 			log.Println("err:", err)
 		}
