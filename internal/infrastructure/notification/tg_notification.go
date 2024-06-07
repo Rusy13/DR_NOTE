@@ -66,8 +66,6 @@ func (bot *TelegramBot) StartListening() {
 		}
 
 		message := update.Message
-		// Handle incoming messages here
-		// For example, to handle authorization via email:
 		if strings.HasPrefix(message.Text, "/authorize") {
 			args := strings.TrimPrefix(message.Text, "/authorize ")
 			parts := strings.Split(args, " ")
@@ -105,7 +103,6 @@ func (bot *TelegramBot) authorizeUserByEmail(email, password string, chatID int6
 		return fmt.Errorf("invalid password")
 	}
 
-	// Логика авторизации, например, сохранение авторизованного пользователя в базе данных или предоставление доступа к определенным функциям.
 	bot.NotifyBirthdaySubscribers(userID)
 
 	return nil
@@ -134,7 +131,6 @@ func (bot *TelegramBot) NotifyBirthdaySubscribers(userID int64) {
 		}
 
 		if isBirthday(now, subscriberBirthday) {
-			log.Println(now, " ===============    ", subscriberBirthday)
 			message := fmt.Sprintf("Сегодня день рождения у %s! 🎉", subscriberName)
 			bot.sendMessage(bot.chatID, message)
 			subscribers = append(subscribers, subscriberID)
@@ -168,7 +164,6 @@ func (bot *TelegramBot) createTelegramChat(ctx context.Context, apiID int, apiHa
 			return fmt.Errorf("неожиданный тип ответа от SendCode")
 		}
 
-		// Ask the user to input the code they received
 		fmt.Print("Введите код, отправленный на ваш телефон: ")
 		var code string
 		if _, err := fmt.Scan(&code); err != nil {
@@ -210,7 +205,6 @@ func (bot *TelegramBot) createTelegramChat(ctx context.Context, apiID int, apiHa
 	})
 }
 
-// sendMessage отправляет сообщение через бота Telegram.
 func (bot *TelegramBot) sendMessage(chatID int64, text string) {
 	msg := tgbotapi.NewMessage(chatID, text)
 	_, err := bot.bot.Send(msg)
@@ -219,8 +213,6 @@ func (bot *TelegramBot) sendMessage(chatID int64, text string) {
 	}
 }
 
-// isBirthday проверяет, является ли указанная дата днем рождения.
 func isBirthday(today, birthday time.Time) bool {
-	log.Println(today.Day(), "=====", birthday.Day(), "=====", today.Month(), "=====", birthday.Month())
 	return today.Day() == birthday.Day() && today.Month() == birthday.Month()
 }

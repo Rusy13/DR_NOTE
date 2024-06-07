@@ -19,7 +19,6 @@ func New(ctx context.Context) (*PGDatabase, error) {
 
 func generateDsn() string {
 	connData := getConnectData()
-	log.Println("::::::::::::::::::::::::::::::::::::::::::::::::::")
 	log.Println("host=", connData.host)
 	return fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 		connData.host, connData.port, connData.user, connData.password, connData.dbName)

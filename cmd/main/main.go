@@ -17,11 +17,11 @@ import (
 	"go.uber.org/zap"
 )
 
-const (
-	apiID   = 22686505                           // Replace with your API ID
-	apiHash = "8db223c8889c9e9cef33ee1746b039ad" // Replace with your API hash
-	phone   = "+79818557454"                     // Replace with your phone number
-)
+//const (
+//	apiID   = 23686505                           // Replace with your API ID
+//	apiHash = "8db222c8889c9e9cef33ee2746b039ad" // Replace with your API hash
+//	phone   = "+79818557454"                     // Replace with your phone number
+//)
 
 func main() {
 
